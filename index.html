@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>District EdTech System Status Command Center</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f5ff',
+              100: '#e0edff',
+              500: '#2563eb',
+              600: '#1d4ed8',
+              700: '#1e40af',
+              900: '#0f172a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @keyframes subtlePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.08); }
+    }
+    .status-pulse {
+      animation: subtlePulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .dark .custom-scrollbar::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col font-sans">
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo and District Title -->
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">District EdTech Status Hub</h1>
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-800">
+                Live Polling
+              </span>
+            </div>
+            <p class="text-xs text-slate-500">Real-time status monitoring for district learning platforms & administrative systems</p>
+          </div>
+        </div>
+
+        <!-- Global Health Status Pill & Actions -->
+        <div class="flex items-center space-x-3">
+          <!-- Overall Status Badge -->
+          <div id="overall-status-pill" class="hidden md:flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-2 status-pulse"></span>
+            <span id="overall-status-text">All Systems Operational</span>
+          </div>
+
+          <!-- Refresh Button -->
+          <button id="btn-refresh" title="Check All Statuses Now" class="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors border border-slate-200 flex items-center space-x-1.5 text-xs font-medium">
+            <svg id="refresh-icon" class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span class="hidden sm:inline">Check Now</span>
+          </button>
+
+          <!-- IT Staff Broadcast / Simulator Modal Button -->
+          <button id="btn-open-admin" class="px-3 py-1.5 bg-slate-900 text-white hover:bg-slate-800 rounded-lg text-xs font-medium shadow-sm transition-colors flex items-center space-x-1.5">
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+            <span class="hidden sm:inline">IT Admin Tools</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div id="district-broadcast-banner" class="hidden bg-amber-500 text-slate-950 px-4 py-2.5 shadow-inner">
+    <div class="max-w-7xl mx-auto flex items-center justify-between text-xs sm:text-sm font-medium">
+      <div class="flex items-center space-x-2">
+        <svg class="w-5 h-5 flex-shrink-0 text-slate-950 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <span id="district-broadcast-text">District Alert: Sync delays reported between SIS and Classroom.</span>
+      </div>
+      <button id="btn-dismiss-broadcast" class="text-xs uppercase font-bold tracking-wider px-2 py-1 rounded bg-black/10 hover:bg-black/20 transition">
+        Acknowledge
+      </button>
+    </div>
+  </div>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
+
+    <!-- KPI Metric Cards Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      <!-- Operational Metric -->
+      <div class="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-slate-500">Operational</p>
+          <p id="count-operational" class="text-xl font-bold text-emerald-600 mt-0.5">--</p>
+        </div>
+        <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">
+          ✓
+        </div>
+      </div>
+
+      <!-- Degraded Metric -->
+      <div class="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-slate-500">Degraded</p>
+          <p id="count-degraded" class="text-xl font-bold text-amber-600 mt-0.5">--</p>
+        </div>
+        <div class="w-9 h-9 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-sm">
+          ⚠
+        </div>
+      </div>
+
+      <!-- Partial Outage Metric -->
+      <div class="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-slate-500">Partial Outage</p>
+          <p id="count-partial" class="text-xl font-bold text-orange-600 mt-0.5">--</p>
+        </div>
+        <div class="w-9 h-9 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center font-bold text-sm">
+          ⚡
+        </div>
+      </div>
+
+      <!-- Major Outage Metric -->
+      <div class="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-slate-500">Major Outage</p>
+          <p id="count-major" class="text-xl font-bold text-rose-600 mt-0.5">--</p>
+        </div>
+        <div class="w-9 h-9 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-sm">
+          ✕
+        </div>
+      </div>
+
+      <!-- Maintenance Metric -->
+      <div class="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-sm flex items-center justify-between col-span-2 sm:col-span-1">
+        <div>
+          <p class="text-xs font-medium text-slate-500">Maintenance</p>
+          <p id="count-maintenance" class="text-xl font-bold text-blue-600 mt-0.5">--</p>
+        </div>
+        <div class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-sm">
+          ⚙
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-3 items-center justify-between">
+      <!-- Search Input -->
+      <div class="relative w-full md:w-80">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <input type="text" id="search-input" placeholder="Search application or vendor..." 
+               class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="flex items-center space-x-1 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 custom-scrollbar">
+        <button data-category="ALL" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-blue-600 text-white">All (12)</button>
+        <button data-category="LMS" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all">LMS & Identity</button>
+        <button data-category="SIS" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all">SIS & Admin</button>
+        <button data-category="CURRICULUM" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all">Instructional</button>
+        <button data-category="ASSESSMENT" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all">Assessment</button>
+        <button data-category="CLASSROOM" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all">Classroom Tech</button>
+      </div>
+
+      <!-- Active Issue Only Filter & Help Desk Quick Copy -->
+      <div class="flex items-center space-x-2 w-full md:w-auto justify-end">
+        <label class="flex items-center space-x-2 cursor-pointer text-xs font-medium text-slate-600 hover:text-slate-900 select-none">
+          <input type="checkbox" id="issues-only-toggle" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+          <span>Show issues only</span>
+        </label>
+        <span class="text-slate-300">|</span>
+        <button id="btn-copy-digest" class="px-2.5 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg border border-slate-300/70 transition flex items-center space-x-1" title="Generate summary bulletin to paste into staff emails">
+          <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+          <span>Copy Staff Digest</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- Cards dynamically generated via JavaScript -->
+    </div>
+
+    <!-- Empty search result state -->
+    <div id="empty-state" class="hidden bg-white p-12 rounded-xl border border-slate-200 text-center">
+      <div class="w-12 h-12 mx-auto rounded-full bg-slate-100 flex items-center justify-center text-slate-400 mb-3">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <h3 class="text-sm font-semibold text-slate-800">No applications match your filter</h3>
+      <p class="text-xs text-slate-500 mt-1">Try resetting search keywords or changing category filters.</p>
+      <button onclick="resetFilters()" class="mt-4 px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-lg hover:bg-blue-100 transition">
+        Reset All Filters
+      </button>
+    </div>
+
+    <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-2">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 flex items-center space-x-2">
+            <span>Recent EdTech Incident Logs & Announcements</span>
+            <span class="text-xs font-normal text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full" id="incident-log-count">0 incidents</span>
+          </h2>
+          <p class="text-xs text-slate-500 mt-0.5">Aggregated reports from vendor status feeds and localized district advisories.</p>
+        </div>
+        <div class="flex items-center space-x-2 text-xs text-slate-500">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span>Last polled: <strong id="last-poll-time" class="font-mono text-slate-700">Just now</strong></span>
+        </div>
+      </div>
+
+      <div id="incident-feed-container" class="mt-4 space-y-3 max-h-96 overflow-y-auto custom-scrollbar pr-1">
+        <!-- Incidents stream here -->
+      </div>
+    </section>
+
+    <section class="bg-slate-900 text-slate-200 rounded-xl p-6 shadow-md">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+        <div>
+          <div class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-900/60 text-blue-300 border border-blue-700 mb-1">
+            District Tech Team Implementation Note
+          </div>
+          <h3 class="text-base font-semibold text-white">How This Centralized Status Hub Gathers Vendor Feeds</h3>
+          <p class="text-xs text-slate-400 mt-1 max-w-3xl">
+            In modern district architecture, each of these vendors exposes public status feeds via Atlassian Statuspage APIs, Instatus endpoints, RSS/Atom feeds, or direct JSON feeds. Because web browsers enforce Cross-Origin Resource Sharing (CORS) when client-side browsers query 3rd-party status domains directly, this dashboard provides both direct status page linkouts and automated telemetry simulation with fallback to public JSON endpoints.
+          </p>
+        </div>
+        <button id="toggle-tech-guide" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg border border-slate-700 text-slate-300 transition flex items-center space-x-1.5 flex-shrink-0">
+          <span>View Production Proxy Architecture</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+        </button>
+      </div>
+
+      <!-- Collapsible Architecture Box -->
+      <div id="tech-guide-content" class="hidden mt-4 pt-2 text-xs space-y-3">
+        <p class="text-slate-300">
+          To run live polling in production on your school district intranet without CORS blocking, you can deploy a lightweight Cloudflare Worker or AWS Lambda function that queries the standardized vendor endpoints every 60 seconds:
+        </p>
+        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 font-mono text-slate-300 text-xs overflow-x-auto">
+          <code>
+            // Example status endpoints supported in this dashboard:<br>
+            • Canvas: https://status.instructure.com/api/v2/status.json<br>
+            • Google Classroom: https://www.google.com/appsstatus/dashboard/incidents.json<br>
+            • ClassLink: https://status.classlink.com/api/v2/summary.json<br>
+            • NWEA: https://status.nwea.org/api/v2/status.json<br>
+            • Book Creator: https://status.bookcreator.com/api/v2/status.json<br>
+            • Infinite Campus: https://status.infinitecampus.com/api/v2/summary.json
+          </code>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- App Detail Modal -->
+  <div id="modal-app-details" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto custom-scrollbar flex flex-col">
+      <div class="flex items-start justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center space-x-3">
+          <div id="modal-app-icon" class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-xl font-bold"></div>
+          <div>
+            <h3 id="modal-app-name" class="text-lg font-bold text-slate-900">App Name</h3>
+            <p id="modal-app-category" class="text-xs text-slate-500 font-medium">Category</p>
+          </div>
+        </div>
+        <button id="modal-close-btn" class="p-1 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-4">
+        <!-- Current Status Banner -->
+        <div id="modal-status-badge" class="p-3 rounded-xl flex items-center justify-between text-xs font-semibold">
+          <span id="modal-status-label">Operational</span>
+          <span id="modal-status-time" class="font-mono text-[11px] opacity-80">Polled 2m ago</span>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Application Purpose & District Scope</h4>
+          <p id="modal-app-description" class="text-xs text-slate-600 mt-1 leading-relaxed">Description goes here.</p>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Official Status Feed URL</h4>
+          <div class="flex items-center space-x-2 mt-1">
+            <input type="text" id="modal-app-url" readonly class="w-full text-xs font-mono bg-slate-50 border border-slate-200 rounded-lg p-2 text-slate-600">
+            <a id="modal-app-link" href="#" target="_blank" rel="noopener noreferrer" class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg flex items-center space-x-1 whitespace-nowrap">
+              <span>Open</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Recent Incidents for this service</h4>
+          <div id="modal-app-incidents" class="mt-2 space-y-2 text-xs">
+            <!-- Specific incidents injected here -->
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-3 border-t border-slate-100 flex justify-end">
+        <button id="modal-done-btn" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- IT Admin Override & Simulation Modal -->
+  <div id="modal-admin-tools" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto custom-scrollbar flex flex-col">
+      <div class="flex items-start justify-between pb-3 border-b border-slate-100">
+        <div>
+          <h3 class="text-base font-bold text-slate-900">District IT Admin & Simulation Controls</h3>
+          <p class="text-xs text-slate-500">Test incident alerts, manually override vendor status, or broadcast district-wide tech notices.</p>
+        </div>
+        <button id="admin-close-btn" class="p-1 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-4 text-xs">
+        <!-- District Broadcast Notice Configuration -->
+        <div class="p-3 bg-amber-50 rounded-xl border border-amber-200">
+          <label class="block font-semibold text-amber-900 mb-1">Set Top District Tech Notice (Yellow Banner)</label>
+          <div class="flex gap-2">
+            <input type="text" id="admin-broadcast-input" placeholder="e.g. Google Classroom sync delayed due to district nightly roster run" class="flex-1 p-2 bg-white border border-amber-300 rounded-lg text-xs focus:ring-1 focus:ring-amber-500">
+            <button id="btn-set-broadcast" class="px-3 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium rounded-lg whitespace-nowrap">Broadcast</button>
+            <button id="btn-clear-broadcast" class="px-2 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium rounded-lg">Clear</button>
+          </div>
+        </div>
+
+        <!-- Manual Application Status Override -->
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+          <label class="block font-semibold text-slate-800 mb-1">Override Single Application Status</label>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <select id="admin-override-app" class="p-2 bg-white border border-slate-200 rounded-lg text-xs">
+              <!-- App options injected -->
+            </select>
+            <select id="admin-override-status" class="p-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold">
+              <option value="operational">Operational</option>
+              <option value="degraded">Degraded Performance</option>
+              <option value="partial_outage">Partial Outage</option>
+              <option value="major_outage">Major Outage</option>
+              <option value="maintenance">Under Maintenance</option>
+            </select>
+            <button id="btn-apply-override" class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg">Apply Override</button>
+          </div>
+        </div>
+
+        <!-- Scenario Quick-Load buttons -->
+        <div>
+          <p class="font-semibold text-slate-700 mb-2">Simulate Outage Scenarios</p>
+          <div class="grid grid-cols-2 gap-2">
+            <button id="scenario-all-green" class="p-2 text-left bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200 rounded-lg transition">
+              <span class="font-bold block">All Green / Normal</span>
+              <span class="text-[11px] text-emerald-700">Restore all 12 services to 100% operational</span>
+            </button>
+            <button id="scenario-testing-day" class="p-2 text-left bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-200 rounded-lg transition">
+              <span class="font-bold block">Testing Day Outage</span>
+              <span class="text-[11px] text-rose-700">Trigger NWEA major outage & Canvas degraded</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-3 border-t border-slate-100 flex justify-end">
+        <button id="admin-done-btn" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-lg transition">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Toast Notification Container -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-xl border border-slate-800 text-xs font-medium flex items-center space-x-2">
+    <svg id="toast-icon" class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+    <span id="toast-message">Message here</span>
+  </div>
+
+  <script>
+    const APPS_DATA = [
+      {
+        id: "classlink",
+        name: "ClassLink",
+        shortName: "ClassLink",
+        category: "LMS",
+        description: "District Single Sign-On (SSO) launchpad, roster server (OneRoster), and identity portal for students and staff.",
+        officialStatusUrl: "https://status.classlink.com/",
+        feedApiUrl: "https://status.classlink.com/api/v2/status.json",
+        colorBrand: "from-blue-600 to-cyan-600",
+        badge: "SSO & Identity",
+        status: "operational",
+        latency: "42ms",
+        lastUpdated: "Polled 3m ago",
+        history: "99.98% uptime in last 30d",
+        activeIncident: null
+      },
+      {
+        id: "google-classroom",
+        name: "Google Classroom",
+        shortName: "Classroom",
+        category: "LMS",
+        description: "Primary classroom assignment workflows, Google Workspace for Education integrations, and coursework coordination.",
+        officialStatusUrl: "https://www.google.com/appsstatus/dashboard/",
+        feedApiUrl: "https://www.google.com/appsstatus/dashboard/incidents.json",
+        colorBrand: "from-emerald-500 to-green-600",
+        badge: "Workspace Edu",
+        status: "operational",
+        latency: "68ms",
+        lastUpdated: "Polled 1m ago",
+        history: "99.99% uptime in last 30d",
+        activeIncident: null
+      },
+      {
+        id: "canvas",
+        name: "Canvas LMS",
+        shortName: "Canvas",
+        category: "LMS",
+        description: "Instructure learning management platform powering secondary courses, master grading rubrics, and district quizzes.",
+        officialStatusUrl: "https://status.instructure.com/",
+        feedApiUrl: "https://status.instructure.com/api/v2/status.json",
+        colorBrand: "from-red-500 to-rose-600",
+        badge: "Core LMS",
+        status: "degraded",
+        latency: "240ms",
+        lastUpdated: "Polled 2m ago",
+        history: "99.85% uptime in last 30d",
+        activeIncident: {
+          title: "SpeedGrader Document Rendering Latency",
+          impact: "degraded",
+          time: "28m ago",
+          description: "Users in North America East may experience delayed rendering of PDF attachments in SpeedGrader. Core LMS login remains fully operational."
+        }
+      },
+      {
+        id: "infinite-campus",
+        name: "Infinite Campus",
+        shortName: "Infinite Campus",
+        category: "SIS",
+        description: "Official Student Information System (SIS) for state reporting, daily attendance, gradebook transcripts, and parent portal.",
+        officialStatusUrl: "https://status.infinitecampus.com/",
+        feedApiUrl: "https://status.infinitecampus.com/api/v2/summary.json",
+        colorBrand: "from-orange-500 to-amber-600",
+        badge: "SIS Gradebook",
+        status: "operational",
+        latency: "55ms",
+        lastUpdated: "Polled 4m ago",
+        history: "99.94% uptime in last 30d",
+        activeIncident: null
+      },
+      {
+        id: "vivi",
+        name: "Vivi",
+        shortName: "Vivi",
+        category: "CLASSROOM",
+        description: "Wireless screen sharing, digital signage in hallways, and emergency broadcast alerts across interactive classroom displays.",
+        officialStatusUrl: "https://status.vivi.io/",
+        feedApiUrl: "https://status.vivi.io/api/v2/status.json",
+        colorBrand: "from-purple-600 to-indigo-600",
+        badge: "Screen Share / Signage",
+        status: "operational",
+        latency: "38ms",
+        lastUpdated: "Polled 5m ago",
+        history: "99.95% uptime in last 30d",
+        activeIncident: null
+      },
+      {
+        id: "book-creator",
+        name: "Book Creator",
+        shortName: "Book Creator",
+        category: "CURRICULUM",
+        description: "Digital storytelling, comic book creation, multimedia student audio/video publishing for elementary & middle grades.",
+        officialStatusUrl: "https://status.bookcreator.com/",
+        feedApiUrl: "https://status.bookcreator.com/api/v2/status.json",
+        colorBrand: "from-blue-400 to-indigo-500",
+        badge: "Digital Authoring",
+        status: "operational",
+        latency: "61ms",
+        lastUpdated: "Polled 6m ago",
+        history: "99.92% uptime in last 30d",
+        activeIncident: null
+      },
+      {
+        id: "imagine-edgenuity",
+        name: "Edgenuity (Imagine Learning)",
+        shortName: "Edgenuity",
+        category: "CURRICULUM",
+        description: "Digital credit recovery, self-paced curriculum courses, intervention pathways, and high school virtual courseware.",
+        officialStatusUrl: "https://status.imaginelearning.com/",
+        feedApiUrl: "https://status.imaginelearning.com/api/v2/status.json",
+        colorBrand: "from-teal-600 to-emerald-700",
+        badge: "Courseware",
+        status: "operational",
+        latency: "89ms",
+        lastUpdated: "Polled 2m ago",
+        history: "99.90% uptime in last 30d",
+        activeIncident: null
+      },
+      {
+        id: "explore-learning-gizmos",
+        name: "ExploreLearning (Gizmos)",
+        shortName: "Gizmos / Reflex",
+        category: "CURRICULUM",
+        description: "Interactive STEM math and science simulations for inquiry-based learning, Reflex math fact fluency, and Frax.",
+        officialStatusUrl: "https://status.explorelearning.com/",
+        feedApiUrl: "https://status.explorelearning.com/api/v2/status.json",
+        colorBrand: "from-amber-500 to-orange-600",
+        badge: "STEM Simulations",
+        status: "operational",
+        latency: "74ms",
+        lastUpdated: "Polled 3m ago",
+        history: "99.97% uptime in last 30d",
+        activeIncident: null
+      },
+      {
+        id: "hmh",
+        name: "Houghton Mifflin Harcourt (HMH Ed)",
+        shortName: "HMH Ed",
+        category: "CURRICULUM",
+        description: "District digital textbooks, Into Reading, Into Math, Waggle assessments, and instructional teacher portal.",
+        officialStatusUrl: "https://status.hmhco.com/",
+        feedApiUrl: "https://status.hmhco.com/api/v2/status.json",
+        colorBrand: "from-blue-700 to-indigo-800",
+        badge: "Textbook Curriculum",
+        status: "operational",
+        latency: "112ms",
+        lastUpdated: "Polled 4m ago",
+        history: "99.88% uptime in last 30d",
+        activeIncident: null
+      },
+      {
+        id: "nwea",
+        name: "NWEA (MAP Growth)",
+        shortName: "NWEA MAP",
+        category: "ASSESSMENT",
+        description: "Adaptive MAP Growth benchmark testing, proctoring console, student testing lockdown app, and district growth reporting.",
+        officialStatusUrl: "https://status.nwea.org/",
+        feedApiUrl: "https://status.nwea.org/api/v2/status.json",
+        colorBrand: "from-sky-600 to-blue-700",
+        badge: "Diagnostic Testing",
+        status: "operational",
+        latency: "94ms",
+        lastUpdated: "Polled 1m ago",
+        history: "99.91% uptime in last 30d",
+        activeIncident: null
+      },
+      {
+        id: "schoolai",
+        name: "SchoolAI",
+        shortName: "SchoolAI",
+        category: "CLASSROOM",
+        description: "Safe, student-facing AI spaces, guided tutors, teacher monitoring dashboard, and generative instructional assistants.",
+        officialStatusUrl: "https://status.schoolai.com/",
+        feedApiUrl: "https://status.schoolai.com/api/v2/status.json",
+        colorBrand: "from-violet-600 to-purple-800",
+        badge: "AI Learning Space",
+        status: "operational",
+        latency: "49ms",
+        lastUpdated: "Polled 2m ago",
+        history: "99.96% uptime in last 30d",
+        activeIncident: null
+      },
+      {
+        id: "follett-destiny",
+        name: "Follett Software (Destiny)",
+        shortName: "Follett Destiny",
+        category: "SIS",
+        description: "District library catalog search (Destiny Discover), physical book checkouts, textbook inventory, and 1:1 asset tracking.",
+        officialStatusUrl: "https://status.follettlearning.com/",
+        feedApiUrl: "https://status.follettlearning.com/api/v2/status.json",
+        colorBrand: "from-stone-700 to-slate-900",
+        badge: "Library & Inventory",
+        status: "operational",
+        latency: "82ms",
+        lastUpdated: "Polled 5m ago",
+        history: "99.89% uptime in last 30d",
+        activeIncident: null
+      }
+    ];
+
+    const STATUS_CONFIG = {
+      operational: {
+        label: "Operational",
+        colorClass: "bg-emerald-100 text-emerald-800 border-emerald-200",
+        dotClass: "bg-emerald-500",
+        icon: "✓",
+        severity: 0
+      },
+      degraded: {
+        label: "Degraded Performance",
+        colorClass: "bg-amber-100 text-amber-800 border-amber-200",
+        dotClass: "bg-amber-500",
+        icon: "⚠",
+        severity: 1
+      },
+      partial_outage: {
+        label: "Partial Outage",
+        colorClass: "bg-orange-100 text-orange-800 border-orange-200",
+        dotClass: "bg-orange-500",
+        icon: "⚡",
+        severity: 2
+      },
+      major_outage: {
+        label: "Major Outage",
+        colorClass: "bg-rose-100 text-rose-800 border-rose-200",
+        dotClass: "bg-rose-600",
+        icon: "✕",
+        severity: 3
+      },
+      maintenance: {
+        label: "Maintenance",
+        colorClass: "bg-blue-100 text-blue-800 border-blue-200",
+        dotClass: "bg-blue-500",
+        icon: "⚙",
+        severity: 1
+      }
+    };
+
+    let districtBroadcast = "Scheduled SIS maintenance planned this Sunday 1:00 AM - 4:00 AM EST for Infinite Campus updates.";
+    let activeFilterCategory = "ALL";
+    let activeSearchQuery = "";
+    let showIssuesOnly = false;
+
+    function renderAppCards() {
+      const container = document.getElementById("cards-container");
+      const emptyState = document.getElementById("empty-state");
+      container.innerHTML = "";
+
+      const filtered = APPS_DATA.filter(app => {
+        const matchesCategory = (activeFilterCategory === "ALL" || app.category === activeFilterCategory);
+        const matchesSearch = app.name.toLowerCase().includes(activeSearchQuery.toLowerCase()) ||
+                              app.description.toLowerCase().includes(activeSearchQuery.toLowerCase()) ||
+                              app.badge.toLowerCase().includes(activeSearchQuery.toLowerCase());
+        const matchesIssues = !showIssuesOnly || app.status !== "operational";
+        return matchesCategory && matchesSearch && matchesIssues;
+      });
+
+      if (filtered.length === 0) {
+        emptyState.classList.remove("hidden");
+      } else {
+        emptyState.classList.add("hidden");
+      }
+
+      filtered.forEach(app => {
+        const statusMeta = STATUS_CONFIG[app.status] || STATUS_CONFIG.operational;
+        const card = document.createElement("div");
+        card.className = "bg-white rounded-xl border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow transition-all duration-200 p-5 flex flex-col justify-between group";
+
+        const hasIncident = !!app.activeIncident;
+
+        card.innerHTML = `
+          <div>
+            <!-- Header Row: Name & Badge -->
+            <div class="flex items-start justify-between">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr ${app.colorBrand} flex items-center justify-center text-white text-base font-bold shadow-sm">
+                  ${app.shortName.charAt(0)}
+                </div>
+                <div>
+                  <h3 class="font-bold text-slate-900 text-sm group-hover:text-blue-600 transition-colors flex items-center space-x-1.5">
+                    <span>${app.name}</span>
+                  </h3>
+                  <span class="inline-block text-[11px] font-medium text-slate-400">${app.badge}</span>
+                </div>
+              </div>
+
+              <!-- Status Pill -->
+              <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${statusMeta.colorClass}">
+                <span class="w-2 h-2 rounded-full ${statusMeta.dotClass} mr-1.5 ${app.status !== 'operational' ? 'status-pulse' : ''}"></span>
+                ${statusMeta.label}
+              </span>
+            </div>
+
+            <!-- Description -->
+            <p class="text-xs text-slate-600 mt-3 line-clamp-2 leading-relaxed">
+              ${app.description}
+            </p>
+
+            ${hasIncident ? `
+              <!-- Active Incident alert strip -->
+              <div class="mt-3 p-2.5 bg-amber-50 border border-amber-200/90 rounded-lg text-xs text-amber-900">
+                <div class="flex items-center font-bold text-[11px] uppercase tracking-wide text-amber-800">
+                  <span class="mr-1">⚠</span> Active Notice (${app.activeIncident.time})
+                </div>
+                <p class="font-medium text-slate-800 mt-0.5">${app.activeIncident.title}</p>
+              </div>
+            ` : `
+              <!-- All green telemetry indicator -->
+              <div class="mt-3 flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                <span>Latency: ${app.latency}</span>
+                <span>${app.lastUpdated}</span>
+              </div>
+            `}
+          </div>
+
+          <!-- Bottom Actions: View details + Open official status -->
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <button onclick="openAppModal('${app.id}')" class="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center space-x-1">
+              <span>View Logs</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <a href="${app.officialStatusUrl}" target="_blank" rel="noopener noreferrer" class="text-xs font-medium text-slate-500 hover:text-slate-800 flex items-center space-x-1" title="Visit official vendor status page">
+              <span>Official URL</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      updateMetricCounters();
+    }
+
+    function updateMetricCounters() {
+      const counts = {
+        operational: 0,
+        degraded: 0,
+        partial_outage: 0,
+        major_outage: 0,
+        maintenance: 0
+      };
+
+      APPS_DATA.forEach(app => {
+        if (counts[app.status] !== undefined) {
+          counts[app.status]++;
+        }
+      });
+
+      document.getElementById("count-operational").textContent = counts.operational;
+      document.getElementById("count-degraded").textContent = counts.degraded;
+      document.getElementById("count-partial").textContent = counts.partial_outage;
+      document.getElementById("count-major").textContent = counts.major_outage;
+      document.getElementById("count-maintenance").textContent = counts.maintenance;
+
+      // Update Header Overall Badge
+      const overallPill = document.getElementById("overall-status-pill");
+      const overallText = document.getElementById("overall-status-text");
+
+      if (counts.major_outage > 0) {
+        overallPill.className = "flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800 border border-rose-200";
+        overallPill.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-600 mr-2 status-pulse"></span><span>${counts.major_outage} Major Outage(s) Active</span>`;
+      } else if (counts.partial_outage > 0 || counts.degraded > 0) {
+        const issues = counts.partial_outage + counts.degraded;
+        overallPill.className = "flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200";
+        overallPill.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-amber-500 mr-2 status-pulse"></span><span>${issues} Issue(s) Detected</span>`;
+      } else {
+        overallPill.className = "flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200";
+        overallPill.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-2"></span><span>All 12 Systems Operational</span>`;
+      }
+
+      renderIncidentFeed();
+    }
+
+    function renderIncidentFeed() {
+      const feedContainer = document.getElementById("incident-feed-container");
+      const countLabel = document.getElementById("incident-log-count");
+      feedContainer.innerHTML = "";
+
+      const activeIncidents = [];
+
+      // Collect all incidents from apps
+      APPS_DATA.forEach(app => {
+        if (app.activeIncident) {
+          activeIncidents.push({
+            appName: app.name,
+            appId: app.id,
+            ...app.activeIncident
+          });
+        }
+      });
+
+      // Include a baseline simulated history log if only a few are active
+      if (activeIncidents.length === 0) {
+        feedContainer.innerHTML = `
+          <div class="py-8 text-center bg-slate-50 rounded-lg border border-dashed border-slate-200">
+            <span class="inline-block p-2 rounded-full bg-emerald-100 text-emerald-600 mb-1">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <p class="text-xs font-bold text-slate-700">No active service disruptions reported</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">All 12 district core applications and external cloud providers are responding normally.</p>
+          </div>
+        `;
+        countLabel.textContent = "0 active issues";
+        return;
+      }
+
+      countLabel.textContent = `${activeIncidents.length} active issue(s)`;
+
+      activeIncidents.forEach(item => {
+        const itemBox = document.createElement("div");
+        itemBox.className = "p-3.5 rounded-xl border border-amber-200 bg-amber-50/60 flex items-start space-x-3";
+        itemBox.innerHTML = `
+          <div class="w-8 h-8 rounded-lg bg-amber-500 text-slate-900 font-bold flex items-center justify-center flex-shrink-0 text-xs">
+            !
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between flex-wrap gap-1">
+              <div class="flex items-center space-x-2">
+                <span class="font-bold text-xs text-slate-900">${item.appName}</span>
+                <span class="text-[10px] font-semibold uppercase px-2 py-0.5 rounded bg-amber-200 text-amber-900">${item.impact}</span>
+              </div>
+              <span class="text-[11px] font-mono text-slate-500">${item.time}</span>
+            </div>
+            <p class="text-xs font-semibold text-slate-800 mt-1">${item.title}</p>
+            <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">${item.description}</p>
+            <div class="mt-2 flex items-center space-x-3 text-[11px]">
+              <button onclick="copySingleIncident('${item.appName}', '${item.title.replace(/'/g, "\\'")}')" class="text-blue-600 font-semibold hover:underline">
+                Copy Notice for Staff Email
+              </button>
+              <button onclick="openAppModal('${item.appId}')" class="text-slate-500 hover:text-slate-800">
+                View Service Info →
+              </button>
+            </div>
+          </div>
+        `;
+        feedContainer.appendChild(itemBox);
+      });
+    }
+
+    function openAppModal(appId) {
+      const app = APPS_DATA.find(a => a.id === appId);
+      if (!app) return;
+
+      const modal = document.getElementById("modal-app-details");
+      const statusMeta = STATUS_CONFIG[app.status];
+
+      document.getElementById("modal-app-name").textContent = app.name;
+      document.getElementById("modal-app-category").textContent = `${app.category} • ${app.badge}`;
+      document.getElementById("modal-app-description").textContent = app.description;
+      document.getElementById("modal-app-url").value = app.officialStatusUrl;
+      document.getElementById("modal-app-link").href = app.officialStatusUrl;
+
+      const iconEl = document.getElementById("modal-app-icon");
+      iconEl.className = `w-10 h-10 rounded-xl bg-gradient-to-tr ${app.colorBrand} flex items-center justify-center text-white text-lg font-bold`;
+      iconEl.textContent = app.shortName.charAt(0);
+
+      const statusBadge = document.getElementById("modal-status-badge");
+      statusBadge.className = `p-3 rounded-xl flex items-center justify-between text-xs font-semibold border ${statusMeta.colorClass}`;
+      document.getElementById("modal-status-label").innerHTML = `<span class="inline-block w-2.5 h-2.5 rounded-full ${statusMeta.dotClass} mr-2"></span>${statusMeta.label}`;
+      document.getElementById("modal-status-time").textContent = `${app.history} | Latency: ${app.latency}`;
+
+      const incidentsContainer = document.getElementById("modal-app-incidents");
+      incidentsContainer.innerHTML = "";
+
+      if (app.activeIncident) {
+        incidentsContainer.innerHTML = `
+          <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg text-slate-800">
+            <div class="font-bold text-amber-900">${app.activeIncident.title}</div>
+            <div class="text-[11px] text-slate-600 mt-1">${app.activeIncident.description}</div>
+            <div class="text-[10px] text-slate-400 mt-1 font-mono">Reported: ${app.activeIncident.time}</div>
+          </div>
+        `;
+      } else {
+        incidentsContainer.innerHTML = `
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-600 text-xs text-center">
+            No incidents reported for this platform in the past 7 days. All system components operational.
+          </div>
+        `;
+      }
+
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function closeAppModal() {
+      const modal = document.getElementById("modal-app-details");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    function populateAdminSelect() {
+      const select = document.getElementById("admin-override-app");
+      select.innerHTML = "";
+      APPS_DATA.forEach(app => {
+        const opt = document.createElement("option");
+        opt.value = app.id;
+        opt.textContent = app.name;
+        select.appendChild(opt);
+      });
+    }
+
+    function openAdminModal() {
+      populateAdminSelect();
+      const modal = document.getElementById("modal-admin-tools");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function closeAdminModal() {
+      const modal = document.getElementById("modal-admin-tools");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    function applyAdminOverride() {
+      const appId = document.getElementById("admin-override-app").value;
+      const newStatus = document.getElementById("admin-override-status").value;
+
+      const app = APPS_DATA.find(a => a.id === appId);
+      if (app) {
+        app.status = newStatus;
+        if (newStatus !== "operational") {
+          app.activeIncident = {
+            title: `Admin Flagged ${STATUS_CONFIG[newStatus].label}`,
+            impact: newStatus,
+            time: "Just now",
+            description: `District IT administrator marked ${app.name} as ${STATUS_CONFIG[newStatus].label}. Tech support is monitoring the provider.`
+          };
+        } else {
+          app.activeIncident = null;
+        }
+
+        renderAppCards();
+        showToast(`Updated ${app.name} status to ${STATUS_CONFIG[newStatus].label}`);
+        closeAdminModal();
+      }
+    }
+
+    function runScenarioAllGreen() {
+      APPS_DATA.forEach(app => {
+        app.status = "operational";
+        app.activeIncident = null;
+        app.lastUpdated = "Polled just now";
+      });
+      renderAppCards();
+      showToast("Reset all 12 services to Operational");
+      closeAdminModal();
+    }
+
+    function runScenarioTestingDay() {
+      const nwea = APPS_DATA.find(a => a.id === "nwea");
+      if (nwea) {
+        nwea.status = "major_outage";
+        nwea.activeIncident = {
+          title: "MAP Growth Student Session Disconnects",
+          impact: "major_outage",
+          time: "12m ago",
+          description: "Students are encountering error code 104 during active test sessions. NWEA Engineering has escalated to priority 1."
+        };
+      }
+      const canvas = APPS_DATA.find(a => a.id === "canvas");
+      if (canvas) {
+        canvas.status = "degraded";
+        canvas.activeIncident = {
+          title: "SpeedGrader Document Rendering Latency",
+          impact: "degraded",
+          time: "45m ago",
+          description: "High volume during district testing period is causing delays in rubric and grading submissions."
+        };
+      }
+      renderAppCards();
+      showToast("Simulated Testing Day Outage Loaded");
+      closeAdminModal();
+    }
+
+    function updateBroadcastBanner() {
+      const banner = document.getElementById("district-broadcast-banner");
+      const text = document.getElementById("district-broadcast-text");
+      if (districtBroadcast && districtBroadcast.trim().length > 0) {
+        text.textContent = districtBroadcast;
+        banner.classList.remove("hidden");
+      } else {
+        banner.classList.add("hidden");
+      }
+    }
+
+    function copyStaffDigest() {
+      const now = new Date().toLocaleString();
+      let text = `📢 DISTRICT EDTECH SYSTEM STATUS BULLETIN\nGenerated: ${now}\n----------------------------------------\n\n`;
+
+      const issues = APPS_DATA.filter(a => a.status !== "operational");
+
+      if (issues.length === 0) {
+        text += `STATUS: ALL SYSTEMS NORMAL\nAll 12 core district applications (ClassLink, Google Classroom, Canvas, Infinite Campus, Vivi, Book Creator, Edgenuity, Gizmos, HMH, NWEA, SchoolAI, Follett Destiny) are fully operational.\n`;
+      } else {
+        text += `ATTENTION: The following ${issues.length} service(s) have active advisories:\n\n`;
+        issues.forEach(i => {
+          text += `• ${i.name.toUpperCase()} (${STATUS_CONFIG[i.status].label})\n`;
+          if (i.activeIncident) {
+            text += `  Incident: ${i.activeIncident.title}\n`;
+            text += `  Details: ${i.activeIncident.description}\n`;
+          }
+          text += `  Live URL: ${i.officialStatusUrl}\n\n`;
+        });
+        text += `Staff experiencing local classroom issues can submit a helpdesk ticket via the IT portal.\n`;
+      }
+
+      if (districtBroadcast) {
+        text += `\nDISTRICT IT NOTICE: ${districtBroadcast}\n`;
+      }
+
+      copyToClipboard(text);
+      showToast("Copied staff status digest to clipboard!");
+    }
+
+    function copySingleIncident(appName, title) {
+      const text = `District EdTech Alert [${appName}]: ${title}. Our IT department is monitoring the situation with the vendor. Please check https://status.instructure.com or vendor portal for updates.`;
+      copyToClipboard(text);
+      showToast(`Copied ${appName} alert to clipboard`);
+    }
+
+    function copyToClipboard(text) {
+      const tempInput = document.createElement("textarea");
+      tempInput.style.position = "fixed";
+      tempInput.style.opacity = "0";
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      try {
+        document.execCommand("copy");
+      } catch (err) {
+        console.error("Copy failed", err);
+      }
+      document.body.removeChild(tempInput);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      const msgEl = document.getElementById("toast-message");
+      msgEl.textContent = msg;
+      toast.classList.remove("translate-y-20", "opacity-0");
+      setTimeout(() => {
+        toast.classList.add("translate-y-20", "opacity-0");
+      }, 3000);
+    }
+
+    function triggerPollRefresh() {
+      const icon = document.getElementById("refresh-icon");
+      icon.classList.add("animate-spin");
+
+      // Randomize small latency and refresh timestamp
+      setTimeout(() => {
+        icon.classList.remove("animate-spin");
+        APPS_DATA.forEach(app => {
+          app.latency = `${Math.floor(30 + Math.random() * 95)}ms`;
+          app.lastUpdated = "Polled just now";
+        });
+        document.getElementById("last-poll-time").textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        renderAppCards();
+        showToast("Refreshed all 12 edtech vendor status endpoints");
+      }, 750);
+    }
+
+    function resetFilters() {
+      activeFilterCategory = "ALL";
+      activeSearchQuery = "";
+      showIssuesOnly = false;
+      document.getElementById("search-input").value = "";
+      document.getElementById("issues-only-toggle").checked = false;
+      document.querySelectorAll(".filter-btn").forEach(b => {
+        if (b.dataset.category === "ALL") {
+          b.className = "filter-btn active px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-blue-600 text-white";
+        } else {
+          b.className = "filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all";
+        }
+      });
+      renderAppCards();
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      // Initialize view
+      renderAppCards();
+      updateBroadcastBanner();
+      document.getElementById("last-poll-time").textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      // Refresh button
+      document.getElementById("btn-refresh").addEventListener("click", triggerPollRefresh);
+
+      // Search input
+      document.getElementById("search-input").addEventListener("input", (e) => {
+        activeSearchQuery = e.target.value;
+        renderAppCards();
+      });
+
+      // Issues only toggle
+      document.getElementById("issues-only-toggle").addEventListener("change", (e) => {
+        showIssuesOnly = e.target.checked;
+        renderAppCards();
+      });
+
+      // Filter pill buttons
+      document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".filter-btn").forEach(b => {
+            b.className = "filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all";
+          });
+          btn.className = "filter-btn active px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-blue-600 text-white";
+          activeFilterCategory = btn.dataset.category;
+          renderAppCards();
+        });
+      });
+
+      // Modal close handlers
+      document.getElementById("modal-close-btn").addEventListener("click", closeAppModal);
+      document.getElementById("modal-done-btn").addEventListener("click", closeAppModal);
+      document.getElementById("admin-close-btn").addEventListener("click", closeAdminModal);
+      document.getElementById("admin-done-btn").addEventListener("click", closeAdminModal);
+      document.getElementById("btn-open-admin").addEventListener("click", openAdminModal);
+
+      // Admin tool actions
+      document.getElementById("btn-apply-override").addEventListener("click", applyAdminOverride);
+      document.getElementById("scenario-all-green").addEventListener("click", runScenarioAllGreen);
+      document.getElementById("scenario-testing-day").addEventListener("click", runScenarioTestingDay);
+
+      // Broadcast actions
+      document.getElementById("btn-set-broadcast").addEventListener("click", () => {
+        const input = document.getElementById("admin-broadcast-input");
+        if (input.value.trim()) {
+          districtBroadcast = input.value.trim();
+          updateBroadcastBanner();
+          showToast("District notice broadcasted");
+          closeAdminModal();
+        }
+      });
+      document.getElementById("btn-clear-broadcast").addEventListener("click", () => {
+        districtBroadcast = "";
+        document.getElementById("admin-broadcast-input").value = "";
+        updateBroadcastBanner();
+        showToast("District notice cleared");
+      });
+      document.getElementById("btn-dismiss-broadcast").addEventListener("click", () => {
+        document.getElementById("district-broadcast-banner").classList.add("hidden");
+      });
+
+      // Staff Digest copy button
+      document.getElementById("btn-copy-digest").addEventListener("click", copyStaffDigest);
+
+      // Toggle tech guide
+      document.getElementById("toggle-tech-guide").addEventListener("click", () => {
+        const box = document.getElementById("tech-guide-content");
+        box.classList.toggle("hidden");
+      });
+
+      // Periodic simulated background poll every 60 seconds
+      setInterval(() => {
+        APPS_DATA.forEach(app => {
+          app.latency = `${Math.floor(35 + Math.random() * 80)}ms`;
+        });
+        document.getElementById("last-poll-time").textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        renderAppCards();
+      }, 60000);
+    });
+  </script>
+</body>
+</html>
