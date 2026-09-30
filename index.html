@@ -184,7 +184,7 @@
 
       <!-- Category Filter Pills -->
       <div class="flex items-center space-x-1 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 custom-scrollbar">
-        <button data-category="ALL" id="filter-all-btn" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-blue-600 text-white">All (15)</button>
+        <button data-category="ALL" id="filter-all-btn" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-blue-600 text-white">All (16)</button>
         <button data-category="LMS" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all">LMS & Identity</button>
         <button data-category="SIS" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all">SIS & Operations</button>
         <button data-category="CURRICULUM" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all">Instructional</button>
@@ -278,7 +278,8 @@
             • Amplify: https://status.amplify.com/api/v2/status.json<br>
             • NWEA: https://status.nwea.org/api/v2/status.json<br>
             • Book Creator: https://status.bookcreator.com/api/v2/status.json<br>
-            • Infinite Campus: https://status.infinitecampus.com/api/v2/summary.json
+            • Infinite Campus: https://status.infinitecampus.com/api/v2/summary.json<br>
+            • Finalsite: https://status.finalsite.com/api/v2/status.json
           </code>
         </div>
       </div>
@@ -803,6 +804,29 @@
         status: "operational",
         latency: "82ms",
         lastUpdated: "Polled 5m ago",
+        activeIncident: null
+      },
+      {
+        id: "finalsite",
+        name: "Finalsite",
+        shortName: "Finalsite",
+        category: "SIS",
+        description: "District & school website CMS, emergency mass notifications, school portals, and community announcement feeds.",
+        officialStatusUrl: "https://status.finalsite.com/",
+        feedApiUrl: "https://status.finalsite.com/api/v2/status.json",
+        colorBrand: "from-sky-700 to-teal-600",
+        badge: "Web CMS & Mass Alerts",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#002d4d"/>
+          <!-- Finalsite Geometric Prism F Motif -->
+          <path d="M11 11h17c.6 0 1 .5.8 1.1l-2.4 4c-.2.3-.5.5-.8.5H11V11z" fill="#00a8cc"/>
+          <path d="M11 18h11.5c.6 0 1 .5.8 1.1l-2.2 3.6c-.2.3-.5.5-.8.5H11V18z" fill="#2dd4bf"/>
+          <path d="M11 11v18c0 .6.4 1 1 1h4.5c.6 0 1-.4 1-1V11H11z" fill="#ffffff"/>
+          <circle cx="27" cy="27" r="3.2" fill="#f59e0b"/>
+        </svg>`,
+        status: "operational",
+        latency: "46ms",
+        lastUpdated: "Polled 2m ago",
         activeIncident: null
       }
     ];
