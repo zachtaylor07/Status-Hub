@@ -6,7 +6,7 @@
   <title>District EdTech System Status Command Center</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Inter -->
+  <!-- Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -19,16 +19,6 @@
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
             mono: ['JetBrains Mono', 'monospace'],
-          },
-          colors: {
-            brand: {
-              50: '#f0f5ff',
-              100: '#e0edff',
-              500: '#2563eb',
-              600: '#1d4ed8',
-              700: '#1e40af',
-              900: '#0f172a',
-            }
           }
         }
       }
@@ -53,12 +43,6 @@
     .custom-scrollbar::-webkit-scrollbar-thumb {
       background: #cbd5e1;
       border-radius: 9999px;
-    }
-    .dark .custom-scrollbar::-webkit-scrollbar-track {
-      background: #1e293b;
-    }
-    .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #475569;
     }
   </style>
 </head>
@@ -101,7 +85,7 @@
             <span class="hidden sm:inline">Check Now</span>
           </button>
 
-          <!-- IT Staff Broadcast / Simulator Modal Button -->
+          <!-- IT Staff Broadcast / PIN Gateway Button -->
           <button id="btn-open-admin" class="px-3 py-1.5 bg-slate-900 text-white hover:bg-slate-800 rounded-lg text-xs font-medium shadow-sm transition-colors flex items-center space-x-1.5">
             <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
@@ -119,7 +103,7 @@
         <svg class="w-5 h-5 flex-shrink-0 text-slate-950 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
         </svg>
-        <span id="district-broadcast-text">District Alert: Sync delays reported between SIS and Classroom.</span>
+        <span id="district-broadcast-text">District Alert: Scheduled SIS maintenance planned this Sunday.</span>
       </div>
       <button id="btn-dismiss-broadcast" class="text-xs uppercase font-bold tracking-wider px-2 py-1 rounded bg-black/10 hover:bg-black/20 transition">
         Acknowledge
@@ -129,7 +113,6 @@
 
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
 
-    <!-- KPI Metric Cards Grid -->
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
       <!-- Operational Metric -->
       <div class="bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-sm flex items-center justify-between">
@@ -201,15 +184,15 @@
 
       <!-- Category Filter Pills -->
       <div class="flex items-center space-x-1 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 custom-scrollbar">
-        <button data-category="ALL" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-blue-600 text-white">All (12)</button>
+        <button data-category="ALL" id="filter-all-btn" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-blue-600 text-white">All (15)</button>
         <button data-category="LMS" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all">LMS & Identity</button>
-        <button data-category="SIS" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all">SIS & Admin</button>
+        <button data-category="SIS" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all">SIS & Operations</button>
         <button data-category="CURRICULUM" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all">Instructional</button>
         <button data-category="ASSESSMENT" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all">Assessment</button>
         <button data-category="CLASSROOM" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 transition-all">Classroom Tech</button>
       </div>
 
-      <!-- Active Issue Only Filter & Help Desk Quick Copy -->
+      <!-- Active Issue Only Filter & Staff Quick Copy -->
       <div class="flex items-center space-x-2 w-full md:w-auto justify-end">
         <label class="flex items-center space-x-2 cursor-pointer text-xs font-medium text-slate-600 hover:text-slate-900 select-none">
           <input type="checkbox" id="issues-only-toggle" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">
@@ -259,7 +242,7 @@
       </div>
 
       <div id="incident-feed-container" class="mt-4 space-y-3 max-h-96 overflow-y-auto custom-scrollbar pr-1">
-        <!-- Incidents stream here -->
+        <!-- Incidents stream dynamically inserted here -->
       </div>
     </section>
 
@@ -271,7 +254,7 @@
           </div>
           <h3 class="text-base font-semibold text-white">How This Centralized Status Hub Gathers Vendor Feeds</h3>
           <p class="text-xs text-slate-400 mt-1 max-w-3xl">
-            In modern district architecture, each of these vendors exposes public status feeds via Atlassian Statuspage APIs, Instatus endpoints, RSS/Atom feeds, or direct JSON feeds. Because web browsers enforce Cross-Origin Resource Sharing (CORS) when client-side browsers query 3rd-party status domains directly, this dashboard provides both direct status page linkouts and automated telemetry simulation with fallback to public JSON endpoints.
+            In modern school district architectures, each of these 15 vendors publishes public status feeds via Atlassian Statuspage APIs, Instatus endpoints, RSS/Atom, or direct status dashboards. To run scheduled background polling on a district intranet without CORS blocking, IT teams can relay these endpoints through a lightweight edge proxy or Cloudflare Worker.
           </p>
         </div>
         <button id="toggle-tech-guide" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg border border-slate-700 text-slate-300 transition flex items-center space-x-1.5 flex-shrink-0">
@@ -283,14 +266,16 @@
       <!-- Collapsible Architecture Box -->
       <div id="tech-guide-content" class="hidden mt-4 pt-2 text-xs space-y-3">
         <p class="text-slate-300">
-          To run live polling in production on your school district intranet without CORS blocking, you can deploy a lightweight Cloudflare Worker or AWS Lambda function that queries the standardized vendor endpoints every 60 seconds:
+          Supported vendor status API endpoint formats for district network polling:
         </p>
-        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 font-mono text-slate-300 text-xs overflow-x-auto">
+        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 font-mono text-slate-300 text-xs overflow-x-auto leading-relaxed">
           <code>
-            // Example status endpoints supported in this dashboard:<br>
             • Canvas: https://status.instructure.com/api/v2/status.json<br>
-            • Google Classroom: https://www.google.com/appsstatus/dashboard/incidents.json<br>
-            • ClassLink: https://status.classlink.com/api/v2/summary.json<br>
+            • Google Workspace: https://www.google.com/appsstatus/dashboard/incidents.json<br>
+            • ClassLink: https://status.classlink.com/api/v2/status.json<br>
+            • Frontline: https://status.frontlineeducation.com/api/v2/status.json<br>
+            • GoGuardian: https://status.goguardian.com/api/v2/status.json<br>
+            • Amplify: https://status.amplify.com/api/v2/status.json<br>
             • NWEA: https://status.nwea.org/api/v2/status.json<br>
             • Book Creator: https://status.bookcreator.com/api/v2/status.json<br>
             • Infinite Campus: https://status.infinitecampus.com/api/v2/summary.json
@@ -300,7 +285,6 @@
     </section>
   </main>
 
-  <!-- App Detail Modal -->
   <div id="modal-app-details" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto custom-scrollbar flex flex-col">
       <div class="flex items-start justify-between pb-3 border-b border-slate-100">
@@ -331,7 +315,7 @@
         <div>
           <h4 class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Official Status Feed URL</h4>
           <div class="flex items-center space-x-2 mt-1">
-            <input type="text" id="modal-app-url" readonly class="w-full text-xs font-mono bg-slate-50 border border-slate-200 rounded-lg p-2 text-slate-600">
+            <input type="text" id="modal-app-url" readonly class="w-full text-xs font-mono bg-slate-50 border border-slate-200 rounded-lg p-2 text-slate-600 select-all">
             <a id="modal-app-link" href="#" target="_blank" rel="noopener noreferrer" class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg flex items-center space-x-1 whitespace-nowrap">
               <span>Open</span>
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
@@ -340,9 +324,9 @@
         </div>
 
         <div>
-          <h4 class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Recent Incidents for this service</h4>
+          <h4 class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Current Incident Log</h4>
           <div id="modal-app-incidents" class="mt-2 space-y-2 text-xs">
-            <!-- Specific incidents injected here -->
+            <!-- Specific incidents injected dynamically -->
           </div>
         </div>
       </div>
@@ -353,13 +337,41 @@
     </div>
   </div>
 
-  <!-- IT Admin Override & Simulation Modal -->
+  <div id="modal-pin-prompt" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 text-center">
+      <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-800 mx-auto flex items-center justify-center mb-3">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+      </div>
+      <h3 class="text-base font-bold text-slate-900">District IT Security Gate</h3>
+      <p class="text-xs text-slate-500 mt-1">Enter your District IT Admin PIN to unlock status overrides, broadcasts, and simulation tools.</p>
+
+      <div class="mt-4">
+        <input type="password" id="admin-pin-input" maxlength="8" placeholder="••••" 
+               class="w-40 text-center tracking-[0.5em] text-xl font-mono py-2 px-3 border-2 border-slate-200 focus:border-blue-600 rounded-xl outline-none transition" />
+        <p id="pin-error-msg" class="text-[11px] font-medium text-rose-600 mt-2 min-h-[16px] hidden">Incorrect PIN. Access denied.</p>
+      </div>
+
+      <div class="mt-5 grid grid-cols-2 gap-2">
+        <button id="btn-cancel-pin" class="px-3 py-2 text-xs font-semibold rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition">Cancel</button>
+        <button id="btn-submit-pin" class="px-3 py-2 text-xs font-semibold rounded-lg bg-slate-900 hover:bg-slate-800 text-white transition flex items-center justify-center space-x-1">
+          <span>Authorize</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div id="modal-admin-tools" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto custom-scrollbar flex flex-col">
       <div class="flex items-start justify-between pb-3 border-b border-slate-100">
         <div>
-          <h3 class="text-base font-bold text-slate-900">District IT Admin & Simulation Controls</h3>
-          <p class="text-xs text-slate-500">Test incident alerts, manually override vendor status, or broadcast district-wide tech notices.</p>
+          <div class="flex items-center space-x-2">
+            <h3 class="text-base font-bold text-slate-900">District IT Admin & Simulation Controls</h3>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Authenticated</span>
+          </div>
+          <p class="text-xs text-slate-500">Test incident alerts, manually override vendor status, broadcast notices, or update your security PIN.</p>
         </div>
         <button id="admin-close-btn" class="p-1 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -382,7 +394,7 @@
           <label class="block font-semibold text-slate-800 mb-1">Override Single Application Status</label>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <select id="admin-override-app" class="p-2 bg-white border border-slate-200 rounded-lg text-xs">
-              <!-- App options injected -->
+              <!-- Dynamically populated -->
             </select>
             <select id="admin-override-status" class="p-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold">
               <option value="operational">Operational</option>
@@ -395,13 +407,13 @@
           </div>
         </div>
 
-        <!-- Scenario Quick-Load buttons -->
+        <!-- Outage Scenario Quick-Load buttons -->
         <div>
           <p class="font-semibold text-slate-700 mb-2">Simulate Outage Scenarios</p>
           <div class="grid grid-cols-2 gap-2">
             <button id="scenario-all-green" class="p-2 text-left bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200 rounded-lg transition">
               <span class="font-bold block">All Green / Normal</span>
-              <span class="text-[11px] text-emerald-700">Restore all 12 services to 100% operational</span>
+              <span class="text-[11px] text-emerald-700">Restore all systems to 100% operational</span>
             </button>
             <button id="scenario-testing-day" class="p-2 text-left bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-200 rounded-lg transition">
               <span class="font-bold block">Testing Day Outage</span>
@@ -409,15 +421,37 @@
             </button>
           </div>
         </div>
+
+        <!-- Admin PIN Management Section -->
+        <div class="p-3 bg-slate-100 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between mb-2">
+            <label class="font-semibold text-slate-800 flex items-center space-x-1.5">
+              <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+              </svg>
+              <span>Change Admin Security PIN</span>
+            </label>
+            <span class="text-[10px] text-slate-500">Stored privately in browser</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <input type="password" id="current-pin-input" placeholder="Current PIN" class="p-2 bg-white border border-slate-300 rounded-lg text-xs" />
+            <input type="password" id="new-pin-input" placeholder="New PIN (4-8 digits)" maxlength="8" class="p-2 bg-white border border-slate-300 rounded-lg text-xs" />
+            <button id="btn-change-pin" class="px-3 py-2 bg-slate-800 hover:bg-slate-900 text-white font-semibold rounded-lg transition">Update PIN</button>
+          </div>
+          <p id="pin-change-status" class="text-[11px] font-medium mt-1.5 hidden"></p>
+        </div>
       </div>
 
-      <div class="mt-6 pt-3 border-t border-slate-100 flex justify-end">
-        <button id="admin-done-btn" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-lg transition">Done</button>
+      <div class="mt-6 pt-3 border-t border-slate-100 flex items-center justify-between">
+        <button id="btn-lock-admin" class="text-xs font-semibold text-rose-600 hover:text-rose-800 flex items-center space-x-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+          <span>Lock Controls</span>
+        </button>
+        <button id="admin-done-btn" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-lg transition">Close</button>
       </div>
     </div>
   </div>
 
-  <!-- Custom Toast Notification Container -->
   <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-xl border border-slate-800 text-xs font-medium flex items-center space-x-2">
     <svg id="toast-icon" class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
     <span id="toast-message">Message here</span>
@@ -430,15 +464,19 @@
         name: "ClassLink",
         shortName: "ClassLink",
         category: "LMS",
-        description: "District Single Sign-On (SSO) launchpad, roster server (OneRoster), and identity portal for students and staff.",
+        description: "District Single Sign-On (SSO) launchpad, OneRoster server, and identity portal for students and staff.",
         officialStatusUrl: "https://status.classlink.com/",
         feedApiUrl: "https://status.classlink.com/api/v2/status.json",
         colorBrand: "from-blue-600 to-cyan-600",
         badge: "SSO & Identity",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#0264b3"/>
+          <path d="M19.8 12.5a6.5 6.5 0 00-4.6 1.9l-3.3 3.3a6.5 6.5 0 000 9.2 6.5 6.5 0 009.2 0l1.4-1.4-2.8-2.8-1.4 1.4a2.5 2.5 0 01-3.6 0 2.5 2.5 0 010-3.6l3.3-3.3a2.5 2.5 0 013.6 0c.5.5.8 1.1.9 1.8h4a6.4 6.4 0 00-6.7-6.5z" fill="#ffffff"/>
+          <path d="M20.2 27.5a6.5 6.5 0 004.6-1.9l3.3-3.3a6.5 6.5 0 000-9.2 6.5 6.5 0 00-9.2 0l-1.4 1.4 2.8 2.8 1.4-1.4a2.5 2.5 0 013.6 0 2.5 2.5 0 010 3.6l-3.3 3.3a2.5 2.5 0 01-3.6 0 2.4 2.4 0 01-.9-1.8h-4a6.4 6.4 0 006.7 6.5z" fill="#00c0f3"/>
+        </svg>`,
         status: "operational",
         latency: "42ms",
         lastUpdated: "Polled 3m ago",
-        history: "99.98% uptime in last 30d",
         activeIncident: null
       },
       {
@@ -446,15 +484,24 @@
         name: "Google Classroom",
         shortName: "Classroom",
         category: "LMS",
-        description: "Primary classroom assignment workflows, Google Workspace for Education integrations, and coursework coordination.",
+        description: "Classroom assignment workflows, Google Workspace for Education integrations, and coursework coordination.",
         officialStatusUrl: "https://www.google.com/appsstatus/dashboard/",
         feedApiUrl: "https://www.google.com/appsstatus/dashboard/incidents.json",
         colorBrand: "from-emerald-500 to-green-600",
         badge: "Workspace Edu",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#1b8e4e"/>
+          <rect x="5" y="7" width="30" height="26" rx="4" fill="#0F9D58" stroke="#F4B400" stroke-width="2.5"/>
+          <circle cx="20" cy="18" r="3.6" fill="#ffffff"/>
+          <path d="M14 27c0-3.3 2.7-5 6-5s6 1.7 6 5z" fill="#ffffff"/>
+          <circle cx="27" cy="19" r="2.5" fill="#ffffff" fill-opacity="0.8"/>
+          <path d="M25 26.5c0-1.8 1.5-2.8 3.5-2.8s3.5 1 3.5 2.8z" fill="#ffffff" fill-opacity="0.8"/>
+          <circle cx="13" cy="19" r="2.5" fill="#ffffff" fill-opacity="0.8"/>
+          <path d="M8 26.5c0-1.8 1.5-2.8 3.5-2.8s3.5 1 3.5 2.8z" fill="#ffffff" fill-opacity="0.8"/>
+        </svg>`,
         status: "operational",
         latency: "68ms",
         lastUpdated: "Polled 1m ago",
-        history: "99.99% uptime in last 30d",
         activeIncident: null
       },
       {
@@ -462,20 +509,32 @@
         name: "Canvas LMS",
         shortName: "Canvas",
         category: "LMS",
-        description: "Instructure learning management platform powering secondary courses, master grading rubrics, and district quizzes.",
+        description: "Instructure LMS powering secondary courses, master grading rubrics, quizzes, and SpeedGrader.",
         officialStatusUrl: "https://status.instructure.com/",
         feedApiUrl: "https://status.instructure.com/api/v2/status.json",
         colorBrand: "from-red-500 to-rose-600",
         badge: "Core LMS",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#e6382f"/>
+          <!-- Instructure Canvas Circle Logo Motif -->
+          <circle cx="20" cy="9" r="2.4" fill="#ffffff"/>
+          <circle cx="27.8" cy="12.2" r="2.4" fill="#ffffff"/>
+          <circle cx="31" cy="20" r="2.4" fill="#ffffff"/>
+          <circle cx="27.8" cy="27.8" r="2.4" fill="#ffffff"/>
+          <circle cx="20" cy="31" r="2.4" fill="#ffffff"/>
+          <circle cx="12.2" cy="27.8" r="2.4" fill="#ffffff"/>
+          <circle cx="9" cy="20" r="2.4" fill="#ffffff"/>
+          <circle cx="12.2" cy="12.2" r="2.4" fill="#ffffff"/>
+          <circle cx="20" cy="20" r="4.2" fill="#ffffff"/>
+        </svg>`,
         status: "degraded",
         latency: "240ms",
         lastUpdated: "Polled 2m ago",
-        history: "99.85% uptime in last 30d",
         activeIncident: {
           title: "SpeedGrader Document Rendering Latency",
           impact: "degraded",
           time: "28m ago",
-          description: "Users in North America East may experience delayed rendering of PDF attachments in SpeedGrader. Core LMS login remains fully operational."
+          description: "Users in North America East may experience delayed rendering of PDF attachments in SpeedGrader. Core LMS logins remain operational."
         }
       },
       {
@@ -483,15 +542,42 @@
         name: "Infinite Campus",
         shortName: "Infinite Campus",
         category: "SIS",
-        description: "Official Student Information System (SIS) for state reporting, daily attendance, gradebook transcripts, and parent portal.",
+        description: "Official Student Information System (SIS) for state reporting, daily attendance, transcripts, and parent portal.",
         officialStatusUrl: "https://status.infinitecampus.com/",
         feedApiUrl: "https://status.infinitecampus.com/api/v2/summary.json",
         colorBrand: "from-orange-500 to-amber-600",
         badge: "SIS Gradebook",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#ea580c"/>
+          <path d="M12 25c-3-3-3-7 0-10s7-3 10 0l6 6c3 3 3 7 0 10s-7 3-10 0l-6-6" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M15 15l10 10" stroke="#fef08a" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
         status: "operational",
         latency: "55ms",
         lastUpdated: "Polled 4m ago",
-        history: "99.94% uptime in last 30d",
+        activeIncident: null
+      },
+      {
+        id: "frontline",
+        name: "Frontline Education",
+        shortName: "Frontline",
+        category: "SIS",
+        description: "Staff absence management, substitute placement, Special Ed / IEP workflows, and professional learning tracking.",
+        officialStatusUrl: "https://status.frontlineeducation.com/",
+        feedApiUrl: "https://status.frontlineeducation.com/api/v2/status.json",
+        colorBrand: "from-teal-600 to-cyan-700",
+        badge: "HR & Special Ed",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#0f766e"/>
+          <!-- Frontline Multicolored Hexagon / Flower Facets -->
+          <polygon points="20,8 28,14 20,20 12,14" fill="#38bdf8"/>
+          <polygon points="28,14 34,22 26,27 20,20" fill="#f59e0b"/>
+          <polygon points="26,27 20,33 14,27 20,20" fill="#2dd4bf"/>
+          <polygon points="14,27 6,22 12,14 20,20" fill="#ffffff"/>
+        </svg>`,
+        status: "operational",
+        latency: "48ms",
+        lastUpdated: "Polled 3m ago",
         activeIncident: null
       },
       {
@@ -499,15 +585,63 @@
         name: "Vivi",
         shortName: "Vivi",
         category: "CLASSROOM",
-        description: "Wireless screen sharing, digital signage in hallways, and emergency broadcast alerts across interactive classroom displays.",
+        description: "Wireless classroom screen sharing, campus digital signage, and emergency visual announcements on classroom displays.",
         officialStatusUrl: "https://status.vivi.io/",
         feedApiUrl: "https://status.vivi.io/api/v2/status.json",
         colorBrand: "from-purple-600 to-indigo-600",
         badge: "Screen Share / Signage",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#6d28d9"/>
+          <!-- Vivi Stylized Lowercase v and screen signal -->
+          <path d="M10 14l6.5 13.5c.6 1.2 2.4 1.2 3 0L26 14h-4l-3.5 8-3.5-8H10z" fill="#ffffff"/>
+          <circle cx="28.5" cy="15" r="3" fill="#a78bfa"/>
+          <path d="M29 21c2.5 0 4.5 2 4.5 4.5" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>`,
         status: "operational",
         latency: "38ms",
         lastUpdated: "Polled 5m ago",
-        history: "99.95% uptime in last 30d",
+        activeIncident: null
+      },
+      {
+        id: "goguardian",
+        name: "GoGuardian",
+        shortName: "GoGuardian",
+        category: "CLASSROOM",
+        description: "District device web filtering, GoGuardian Teacher live screen monitoring, student safety alerts, and CIPA compliance.",
+        officialStatusUrl: "https://status.goguardian.com/",
+        feedApiUrl: "https://status.goguardian.com/api/v2/status.json",
+        colorBrand: "from-blue-500 to-indigo-600",
+        badge: "Filtering & Monitoring",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#1e3a8a"/>
+          <!-- GoGuardian Shield / G Eye Emblem -->
+          <path d="M20 7l12 4.5v9.5c0 7.2-5.1 13.9-12 15.5-6.9-1.6-12-8.3-12-15.5V11.5L20 7z" fill="#2563eb"/>
+          <path d="M20 13c-4.4 0-8 3.6-8 8s3.6 8 8 8c4.1 0 7.5-3.1 7.9-7.1H20v-3h11.1c.1.7.2 1.4.2 2.1 0 6.6-5.4 12-12 12-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8.1 3.1l-2.2 2.2C23.6 13.9 21.9 13 20 13z" fill="#ffffff"/>
+        </svg>`,
+        status: "operational",
+        latency: "52ms",
+        lastUpdated: "Polled 2m ago",
+        activeIncident: null
+      },
+      {
+        id: "amplify",
+        name: "Amplify",
+        shortName: "Amplify",
+        category: "CURRICULUM",
+        description: "Curriculum platform powering Amplify Science, mCLASS early literacy assessments, and CKLA reading programs.",
+        officialStatusUrl: "https://status.amplify.com/",
+        feedApiUrl: "https://status.amplify.com/api/v2/status.json",
+        colorBrand: "from-amber-600 to-rose-600",
+        badge: "Science & Literacy",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#ea580c"/>
+          <!-- Amplify Starburst Radiance -->
+          <circle cx="20" cy="20" r="4.5" fill="#ffffff"/>
+          <path d="M20 8v5m0 14v5M8 20h5m14 0h5M11.5 11.5l3.5 3.5m10 10l3.5 3.5M11.5 28.5l3.5-3.5m10-10l3.5-3.5" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+        </svg>`,
+        status: "operational",
+        latency: "66ms",
+        lastUpdated: "Polled 4m ago",
         activeIncident: null
       },
       {
@@ -515,15 +649,22 @@
         name: "Book Creator",
         shortName: "Book Creator",
         category: "CURRICULUM",
-        description: "Digital storytelling, comic book creation, multimedia student audio/video publishing for elementary & middle grades.",
+        description: "Digital storytelling, comic book creation, and multimedia student audio/video publishing for elementary & middle grades.",
         officialStatusUrl: "https://status.bookcreator.com/",
         feedApiUrl: "https://status.bookcreator.com/api/v2/status.json",
         colorBrand: "from-blue-400 to-indigo-500",
         badge: "Digital Authoring",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#2563eb"/>
+          <!-- Book Creator Open Book / Rainbow Bookmark -->
+          <path d="M20 14c-4-2-8-1-12 1v15c4-2 8-1 12 1 4-2 8-3 12-1V15c-4-2-8-3-12-1z" fill="#ffffff"/>
+          <path d="M19 11v18c0 .5.4 1 1 1s1-.5 1-1V11c0-.5-.4-1-1-1s-1 .5-1 1z" fill="#facc15"/>
+          <circle cx="14" cy="20" r="1.5" fill="#f43f5e"/>
+          <circle cx="26" cy="20" r="1.5" fill="#3b82f6"/>
+        </svg>`,
         status: "operational",
         latency: "61ms",
         lastUpdated: "Polled 6m ago",
-        history: "99.92% uptime in last 30d",
         activeIncident: null
       },
       {
@@ -531,15 +672,23 @@
         name: "Edgenuity (Imagine Learning)",
         shortName: "Edgenuity",
         category: "CURRICULUM",
-        description: "Digital credit recovery, self-paced curriculum courses, intervention pathways, and high school virtual courseware.",
+        description: "Online credit recovery, self-paced curriculum courses, intervention pathways, and high school courseware.",
         officialStatusUrl: "https://status.imaginelearning.com/",
         feedApiUrl: "https://status.imaginelearning.com/api/v2/status.json",
         colorBrand: "from-teal-600 to-emerald-700",
         badge: "Courseware",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#0369a1"/>
+          <!-- Imagine Learning Spark Pinwheel -->
+          <circle cx="20" cy="20" r="3.5" fill="#ffffff"/>
+          <path d="M20 9c0 5-4 7-4 7s-2-4 0-7 4 0 4 0z" fill="#38bdf8"/>
+          <path d="M31 20c-5 0-7-4-7-4s4-2 7 0 0 4 0 4z" fill="#34d399"/>
+          <path d="M20 31c0-5 4-7 4-7s2 4 0 7-4 0-4 0z" fill="#fbbf24"/>
+          <path d="M9 20c5 0 7 4 7 4s-4 2-7 0 0-4 0-4z" fill="#f43f5e"/>
+        </svg>`,
         status: "operational",
         latency: "89ms",
         lastUpdated: "Polled 2m ago",
-        history: "99.90% uptime in last 30d",
         activeIncident: null
       },
       {
@@ -547,15 +696,23 @@
         name: "ExploreLearning (Gizmos)",
         shortName: "Gizmos / Reflex",
         category: "CURRICULUM",
-        description: "Interactive STEM math and science simulations for inquiry-based learning, Reflex math fact fluency, and Frax.",
+        description: "Interactive STEM math and science simulations for inquiry learning, Reflex math fact fluency, and Frax fractions.",
         officialStatusUrl: "https://status.explorelearning.com/",
         feedApiUrl: "https://status.explorelearning.com/api/v2/status.json",
         colorBrand: "from-amber-500 to-orange-600",
         badge: "STEM Simulations",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#d97706"/>
+          <!-- Gizmos STEM atom / gear icon -->
+          <circle cx="20" cy="20" r="3" fill="#ffffff"/>
+          <ellipse cx="20" cy="20" rx="12" ry="5" transform="rotate(30 20 20)" stroke="#ffffff" stroke-width="2" fill="none"/>
+          <ellipse cx="20" cy="20" rx="12" ry="5" transform="rotate(-30 20 20)" stroke="#ffffff" stroke-width="2" fill="none"/>
+          <circle cx="29" cy="15" r="2" fill="#fef08a"/>
+          <circle cx="11" cy="25" r="2" fill="#fef08a"/>
+        </svg>`,
         status: "operational",
         latency: "74ms",
         lastUpdated: "Polled 3m ago",
-        history: "99.97% uptime in last 30d",
         activeIncident: null
       },
       {
@@ -568,10 +725,16 @@
         feedApiUrl: "https://status.hmhco.com/api/v2/status.json",
         colorBrand: "from-blue-700 to-indigo-800",
         badge: "Textbook Curriculum",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#1e3a8a"/>
+          <!-- HMH Geometric Three-tier Prism -->
+          <polygon points="20,9 31,16 20,23 9,16" fill="#38bdf8"/>
+          <polygon points="9,18 20,25 20,33 9,26" fill="#0284c7"/>
+          <polygon points="31,18 31,26 20,33 20,25" fill="#0369a1"/>
+        </svg>`,
         status: "operational",
         latency: "112ms",
         lastUpdated: "Polled 4m ago",
-        history: "99.88% uptime in last 30d",
         activeIncident: null
       },
       {
@@ -579,15 +742,22 @@
         name: "NWEA (MAP Growth)",
         shortName: "NWEA MAP",
         category: "ASSESSMENT",
-        description: "Adaptive MAP Growth benchmark testing, proctoring console, student testing lockdown app, and district growth reporting.",
+        description: "Adaptive MAP Growth benchmark testing, proctoring console, student lockdown browser, and district reporting.",
         officialStatusUrl: "https://status.nwea.org/",
         feedApiUrl: "https://status.nwea.org/api/v2/status.json",
         colorBrand: "from-sky-600 to-blue-700",
         badge: "Diagnostic Testing",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#0284c7"/>
+          <!-- NWEA Growth Arch / Target Wave -->
+          <circle cx="20" cy="20" r="12" stroke="#ffffff" stroke-width="2" stroke-dasharray="4 2" fill="none"/>
+          <path d="M12 24c3-5 7-7 13-6" stroke="#facc15" stroke-width="3" stroke-linecap="round"/>
+          <polygon points="27,15 28,21 22,19" fill="#facc15"/>
+          <circle cx="20" cy="20" r="3" fill="#ffffff"/>
+        </svg>`,
         status: "operational",
         latency: "94ms",
         lastUpdated: "Polled 1m ago",
-        history: "99.91% uptime in last 30d",
         activeIncident: null
       },
       {
@@ -600,10 +770,17 @@
         feedApiUrl: "https://status.schoolai.com/api/v2/status.json",
         colorBrand: "from-violet-600 to-purple-800",
         badge: "AI Learning Space",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#4c1d95"/>
+          <!-- SchoolAI Neural Spark & Academic Cap -->
+          <polygon points="20,11 31,16 20,21 9,16" fill="#a855f7"/>
+          <path d="M13 18.5v5c0 2 3.1 3.5 7 3.5s7-1.5 7-3.5v-5" stroke="#c084fc" stroke-width="2" fill="none"/>
+          <circle cx="20" cy="28" r="2.5" fill="#38bdf8"/>
+          <line x1="20" y1="21" x2="20" y2="25.5" stroke="#38bdf8" stroke-width="2"/>
+        </svg>`,
         status: "operational",
         latency: "49ms",
         lastUpdated: "Polled 2m ago",
-        history: "99.96% uptime in last 30d",
         activeIncident: null
       },
       {
@@ -616,10 +793,16 @@
         feedApiUrl: "https://status.follettlearning.com/api/v2/status.json",
         colorBrand: "from-stone-700 to-slate-900",
         badge: "Library & Inventory",
+        logoSvg: `<svg viewBox="0 0 40 40" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="40" height="40" rx="8" fill="#1e293b"/>
+          <!-- Follett Open Book & Tree / Crest Motif -->
+          <path d="M10 13c3.5-1.5 7-1 10 1 3-2 6.5-2.5 10-1v15c-3.5-1.5-7-1-10 1-3-2-6.5-2.5-10-1V13z" fill="#ffffff"/>
+          <path d="M20 14v16" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="20" cy="11" r="2" fill="#10b981"/>
+        </svg>`,
         status: "operational",
         latency: "82ms",
         lastUpdated: "Polled 5m ago",
-        history: "99.89% uptime in last 30d",
         activeIncident: null
       }
     ];
@@ -667,10 +850,28 @@
     let activeSearchQuery = "";
     let showIssuesOnly = false;
 
+    // PIN configuration: stored securely in browser storage
+    const PIN_STORAGE_KEY = "district_it_security_pin";
+    const DEFAULT_PIN = "2468";
+    let isAdminUnlocked = false;
+
+    function getAdminPin() {
+      return localStorage.getItem(PIN_STORAGE_KEY) || DEFAULT_PIN;
+    }
+
+    function setAdminPin(newPin) {
+      localStorage.setItem(PIN_STORAGE_KEY, newPin);
+    }
+
     function renderAppCards() {
       const container = document.getElementById("cards-container");
       const emptyState = document.getElementById("empty-state");
       container.innerHTML = "";
+
+      const allFilterBtn = document.getElementById("filter-all-btn");
+      if (allFilterBtn) {
+        allFilterBtn.textContent = `All (${APPS_DATA.length})`;
+      }
 
       const filtered = APPS_DATA.filter(app => {
         const matchesCategory = (activeFilterCategory === "ALL" || app.category === activeFilterCategory);
@@ -696,11 +897,10 @@
 
         card.innerHTML = `
           <div>
-            <!-- Header Row: Name & Badge -->
             <div class="flex items-start justify-between">
               <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr ${app.colorBrand} flex items-center justify-center text-white text-base font-bold shadow-sm">
-                  ${app.shortName.charAt(0)}
+                <div class="w-11 h-11 rounded-xl bg-slate-50 border border-slate-200/80 shadow-sm p-1.5 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200" title="${app.name} Corporate Logo">
+                  ${app.logoSvg}
                 </div>
                 <div>
                   <h3 class="font-bold text-slate-900 text-sm group-hover:text-blue-600 transition-colors flex items-center space-x-1.5">
@@ -710,20 +910,17 @@
                 </div>
               </div>
 
-              <!-- Status Pill -->
               <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${statusMeta.colorClass}">
                 <span class="w-2 h-2 rounded-full ${statusMeta.dotClass} mr-1.5 ${app.status !== 'operational' ? 'status-pulse' : ''}"></span>
                 ${statusMeta.label}
               </span>
             </div>
 
-            <!-- Description -->
             <p class="text-xs text-slate-600 mt-3 line-clamp-2 leading-relaxed">
               ${app.description}
             </p>
 
             ${hasIncident ? `
-              <!-- Active Incident alert strip -->
               <div class="mt-3 p-2.5 bg-amber-50 border border-amber-200/90 rounded-lg text-xs text-amber-900">
                 <div class="flex items-center font-bold text-[11px] uppercase tracking-wide text-amber-800">
                   <span class="mr-1">⚠</span> Active Notice (${app.activeIncident.time})
@@ -731,7 +928,6 @@
                 <p class="font-medium text-slate-800 mt-0.5">${app.activeIncident.title}</p>
               </div>
             ` : `
-              <!-- All green telemetry indicator -->
               <div class="mt-3 flex items-center justify-between text-[11px] text-slate-400 font-mono">
                 <span>Latency: ${app.latency}</span>
                 <span>${app.lastUpdated}</span>
@@ -739,7 +935,6 @@
             `}
           </div>
 
-          <!-- Bottom Actions: View details + Open official status -->
           <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
             <button onclick="openAppModal('${app.id}')" class="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center space-x-1">
               <span>View Logs</span>
@@ -779,20 +974,18 @@
       document.getElementById("count-major").textContent = counts.major_outage;
       document.getElementById("count-maintenance").textContent = counts.maintenance;
 
-      // Update Header Overall Badge
       const overallPill = document.getElementById("overall-status-pill");
-      const overallText = document.getElementById("overall-status-text");
 
       if (counts.major_outage > 0) {
-        overallPill.className = "flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800 border border-rose-200";
+        overallPill.className = "hidden md:flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800 border border-rose-200";
         overallPill.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-rose-600 mr-2 status-pulse"></span><span>${counts.major_outage} Major Outage(s) Active</span>`;
       } else if (counts.partial_outage > 0 || counts.degraded > 0) {
         const issues = counts.partial_outage + counts.degraded;
-        overallPill.className = "flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200";
+        overallPill.className = "hidden md:flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200";
         overallPill.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-amber-500 mr-2 status-pulse"></span><span>${issues} Issue(s) Detected</span>`;
       } else {
-        overallPill.className = "flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200";
-        overallPill.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-2"></span><span>All 12 Systems Operational</span>`;
+        overallPill.className = "hidden md:flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200";
+        overallPill.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-2"></span><span>All ${APPS_DATA.length} Systems Operational</span>`;
       }
 
       renderIncidentFeed();
@@ -805,7 +998,6 @@
 
       const activeIncidents = [];
 
-      // Collect all incidents from apps
       APPS_DATA.forEach(app => {
         if (app.activeIncident) {
           activeIncidents.push({
@@ -816,7 +1008,6 @@
         }
       });
 
-      // Include a baseline simulated history log if only a few are active
       if (activeIncidents.length === 0) {
         feedContainer.innerHTML = `
           <div class="py-8 text-center bg-slate-50 rounded-lg border border-dashed border-slate-200">
@@ -824,43 +1015,43 @@
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
             </span>
             <p class="text-xs font-bold text-slate-700">No active service disruptions reported</p>
-            <p class="text-[11px] text-slate-500 mt-0.5">All 12 district core applications and external cloud providers are responding normally.</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">All ${APPS_DATA.length} district core applications and external cloud providers are responding normally.</p>
           </div>
         `;
         countLabel.textContent = "0 active issues";
         return;
       }
 
-      countLabel.textContent = `${activeIncidents.length} active issue(s)`;
+      countLabel.textContent = `${activeIncidents.length} active issue${activeIncidents.length > 1 ? 's' : ''}`;
 
       activeIncidents.forEach(item => {
-        const itemBox = document.createElement("div");
-        itemBox.className = "p-3.5 rounded-xl border border-amber-200 bg-amber-50/60 flex items-start space-x-3";
-        itemBox.innerHTML = `
-          <div class="w-8 h-8 rounded-lg bg-amber-500 text-slate-900 font-bold flex items-center justify-center flex-shrink-0 text-xs">
-            !
+        const statusMeta = STATUS_CONFIG[item.impact] || STATUS_CONFIG.degraded;
+        const itemEl = document.createElement("div");
+        itemEl.className = "p-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50/80 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3";
+
+        itemEl.innerHTML = `
+          <div class="space-y-1 flex-1">
+            <div class="flex items-center space-x-2">
+              <span class="font-bold text-slate-900 text-xs">${item.appName}</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold border ${statusMeta.colorClass}">
+                ${statusMeta.label}
+              </span>
+              <span class="text-[11px] text-slate-400 font-mono">${item.time}</span>
+            </div>
+            <p class="text-xs font-medium text-slate-800">${item.title}</p>
+            <p class="text-xs text-slate-500 leading-relaxed">${item.description}</p>
           </div>
-          <div class="flex-1">
-            <div class="flex items-center justify-between flex-wrap gap-1">
-              <div class="flex items-center space-x-2">
-                <span class="font-bold text-xs text-slate-900">${item.appName}</span>
-                <span class="text-[10px] font-semibold uppercase px-2 py-0.5 rounded bg-amber-200 text-amber-900">${item.impact}</span>
-              </div>
-              <span class="text-[11px] font-mono text-slate-500">${item.time}</span>
-            </div>
-            <p class="text-xs font-semibold text-slate-800 mt-1">${item.title}</p>
-            <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">${item.description}</p>
-            <div class="mt-2 flex items-center space-x-3 text-[11px]">
-              <button onclick="copySingleIncident('${item.appName}', '${item.title.replace(/'/g, "\\'")}')" class="text-blue-600 font-semibold hover:underline">
-                Copy Notice for Staff Email
-              </button>
-              <button onclick="openAppModal('${item.appId}')" class="text-slate-500 hover:text-slate-800">
-                View Service Info →
-              </button>
-            </div>
+          <div class="flex items-center space-x-2 flex-shrink-0 self-end sm:self-center">
+            <button onclick="copySingleIncident('${item.appName}', '${item.title.replace(/'/g, "\\'")}')" class="px-2.5 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition flex items-center space-x-1">
+              <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+              <span>Copy Notice</span>
+            </button>
+            <button onclick="openAppModal('${item.appId}')" class="px-2.5 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition">
+              Details
+            </button>
           </div>
         `;
-        feedContainer.appendChild(itemBox);
+        feedContainer.appendChild(itemEl);
       });
     }
 
@@ -868,43 +1059,42 @@
       const app = APPS_DATA.find(a => a.id === appId);
       if (!app) return;
 
-      const modal = document.getElementById("modal-app-details");
-      const statusMeta = STATUS_CONFIG[app.status];
+      const statusMeta = STATUS_CONFIG[app.status] || STATUS_CONFIG.operational;
+
+      const icon = document.getElementById("modal-app-icon");
+      icon.className = "w-12 h-12 rounded-xl bg-slate-50 border border-slate-200 shadow-sm p-2 flex items-center justify-center flex-shrink-0";
+      icon.innerHTML = app.logoSvg;
 
       document.getElementById("modal-app-name").textContent = app.name;
-      document.getElementById("modal-app-category").textContent = `${app.category} • ${app.badge}`;
+      document.getElementById("modal-app-category").textContent = `${app.badge} • ${app.category}`;
+
+      const badge = document.getElementById("modal-status-badge");
+      badge.className = `p-3 rounded-xl flex items-center justify-between text-xs font-semibold border ${statusMeta.colorClass}`;
+      document.getElementById("modal-status-label").innerHTML = `<span class="inline-block w-2 h-2 rounded-full ${statusMeta.dotClass} mr-2"></span>Status: ${statusMeta.label}`;
+      document.getElementById("modal-status-time").textContent = `${app.lastUpdated} (${app.latency})`;
+
       document.getElementById("modal-app-description").textContent = app.description;
       document.getElementById("modal-app-url").value = app.officialStatusUrl;
       document.getElementById("modal-app-link").href = app.officialStatusUrl;
 
-      const iconEl = document.getElementById("modal-app-icon");
-      iconEl.className = `w-10 h-10 rounded-xl bg-gradient-to-tr ${app.colorBrand} flex items-center justify-center text-white text-lg font-bold`;
-      iconEl.textContent = app.shortName.charAt(0);
-
-      const statusBadge = document.getElementById("modal-status-badge");
-      statusBadge.className = `p-3 rounded-xl flex items-center justify-between text-xs font-semibold border ${statusMeta.colorClass}`;
-      document.getElementById("modal-status-label").innerHTML = `<span class="inline-block w-2.5 h-2.5 rounded-full ${statusMeta.dotClass} mr-2"></span>${statusMeta.label}`;
-      document.getElementById("modal-status-time").textContent = `${app.history} | Latency: ${app.latency}`;
-
-      const incidentsContainer = document.getElementById("modal-app-incidents");
-      incidentsContainer.innerHTML = "";
-
+      const incidentBox = document.getElementById("modal-app-incidents");
       if (app.activeIncident) {
-        incidentsContainer.innerHTML = `
-          <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg text-slate-800">
+        incidentBox.innerHTML = `
+          <div class="p-3 bg-amber-50 rounded-lg border border-amber-200">
             <div class="font-bold text-amber-900">${app.activeIncident.title}</div>
-            <div class="text-[11px] text-slate-600 mt-1">${app.activeIncident.description}</div>
-            <div class="text-[10px] text-slate-400 mt-1 font-mono">Reported: ${app.activeIncident.time}</div>
+            <div class="text-[11px] text-amber-700 font-mono mt-0.5">Reported: ${app.activeIncident.time}</div>
+            <div class="text-xs text-slate-700 mt-1">${app.activeIncident.description}</div>
           </div>
         `;
       } else {
-        incidentsContainer.innerHTML = `
-          <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg text-slate-600 text-xs text-center">
-            No incidents reported for this platform in the past 7 days. All system components operational.
+        incidentBox.innerHTML = `
+          <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 text-slate-500 text-xs">
+            No active vendor incidents or performance disruptions currently logged for this service.
           </div>
         `;
       }
 
+      const modal = document.getElementById("modal-app-details");
       modal.classList.remove("hidden");
       modal.classList.add("flex");
     }
@@ -913,6 +1103,80 @@
       const modal = document.getElementById("modal-app-details");
       modal.classList.add("hidden");
       modal.classList.remove("flex");
+    }
+
+    function handleOpenAdminClick() {
+      if (isAdminUnlocked) {
+        openAdminModal();
+      } else {
+        openPinPrompt();
+      }
+    }
+
+    function openPinPrompt() {
+      const modal = document.getElementById("modal-pin-prompt");
+      const pinInput = document.getElementById("admin-pin-input");
+      const err = document.getElementById("pin-error-msg");
+      pinInput.value = "";
+      err.classList.add("hidden");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      setTimeout(() => pinInput.focus(), 100);
+    }
+
+    function closePinPrompt() {
+      const modal = document.getElementById("modal-pin-prompt");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    function verifyPin() {
+      const enteredPin = document.getElementById("admin-pin-input").value.trim();
+      const currentPin = getAdminPin();
+      const err = document.getElementById("pin-error-msg");
+
+      if (enteredPin === currentPin) {
+        isAdminUnlocked = true;
+        closePinPrompt();
+        openAdminModal();
+        showToast("Authenticated as District IT Admin");
+      } else {
+        err.textContent = "Invalid Admin PIN. Access Denied.";
+        err.classList.remove("hidden");
+        document.getElementById("admin-pin-input").select();
+      }
+    }
+
+    function lockAdminSession() {
+      isAdminUnlocked = false;
+      closeAdminModal();
+      showToast("IT Admin Controls Locked");
+    }
+
+    function changeAdminPin() {
+      const currentInput = document.getElementById("current-pin-input").value.trim();
+      const newInput = document.getElementById("new-pin-input").value.trim();
+      const statusEl = document.getElementById("pin-change-status");
+      const storedPin = getAdminPin();
+
+      if (currentInput !== storedPin) {
+        statusEl.className = "text-[11px] font-medium mt-1.5 text-rose-600 block";
+        statusEl.textContent = "Current PIN is incorrect.";
+        return;
+      }
+
+      if (!newInput || newInput.length < 4 || isNaN(newInput)) {
+        statusEl.className = "text-[11px] font-medium mt-1.5 text-rose-600 block";
+        statusEl.textContent = "New PIN must be 4 to 8 digits.";
+        return;
+      }
+
+      setAdminPin(newInput);
+      document.getElementById("current-pin-input").value = "";
+      document.getElementById("new-pin-input").value = "";
+      statusEl.className = "text-[11px] font-medium mt-1.5 text-emerald-600 block";
+      statusEl.textContent = "Admin PIN updated successfully!";
+      showToast("District Security PIN updated");
     }
 
     function populateAdminSelect() {
@@ -929,6 +1193,8 @@
     function openAdminModal() {
       populateAdminSelect();
       const modal = document.getElementById("modal-admin-tools");
+      const statusEl = document.getElementById("pin-change-status");
+      if (statusEl) statusEl.classList.add("hidden");
       modal.classList.remove("hidden");
       modal.classList.add("flex");
     }
@@ -970,7 +1236,7 @@
         app.lastUpdated = "Polled just now";
       });
       renderAppCards();
-      showToast("Reset all 12 services to Operational");
+      showToast(`Reset all ${APPS_DATA.length} services to Operational`);
       closeAdminModal();
     }
 
@@ -1018,7 +1284,8 @@
       const issues = APPS_DATA.filter(a => a.status !== "operational");
 
       if (issues.length === 0) {
-        text += `STATUS: ALL SYSTEMS NORMAL\nAll 12 core district applications (ClassLink, Google Classroom, Canvas, Infinite Campus, Vivi, Book Creator, Edgenuity, Gizmos, HMH, NWEA, SchoolAI, Follett Destiny) are fully operational.\n`;
+        const names = APPS_DATA.map(a => a.name).join(", ");
+        text += `STATUS: ALL SYSTEMS NORMAL\nAll ${APPS_DATA.length} core district applications (${names}) are fully operational.\n`;
       } else {
         text += `ATTENTION: The following ${issues.length} service(s) have active advisories:\n\n`;
         issues.forEach(i => {
@@ -1041,41 +1308,42 @@
     }
 
     function copySingleIncident(appName, title) {
-      const text = `District EdTech Alert [${appName}]: ${title}. Our IT department is monitoring the situation with the vendor. Please check https://status.instructure.com or vendor portal for updates.`;
+      const text = `District EdTech Alert [${appName}]: ${title}. Our IT department is monitoring the situation with the vendor. Please check vendor portal for updates.`;
       copyToClipboard(text);
       showToast(`Copied ${appName} alert to clipboard`);
     }
 
     function copyToClipboard(text) {
-      const tempInput = document.createElement("textarea");
-      tempInput.style.position = "fixed";
-      tempInput.style.opacity = "0";
-      tempInput.value = text;
-      document.body.appendChild(tempInput);
-      tempInput.select();
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
       try {
         document.execCommand("copy");
       } catch (err) {
-        console.error("Copy failed", err);
+        console.error("Clipboard copy failed:", err);
       }
-      document.body.removeChild(tempInput);
+      document.body.removeChild(textarea);
     }
 
-    function showToast(msg) {
+    function showToast(message) {
       const toast = document.getElementById("toast");
-      const msgEl = document.getElementById("toast-message");
-      msgEl.textContent = msg;
+      const msg = document.getElementById("toast-message");
+      msg.textContent = message;
       toast.classList.remove("translate-y-20", "opacity-0");
+      toast.classList.add("translate-y-0", "opacity-100");
       setTimeout(() => {
+        toast.classList.remove("translate-y-0", "opacity-100");
         toast.classList.add("translate-y-20", "opacity-0");
-      }, 3000);
+      }, 3200);
     }
 
     function triggerPollRefresh() {
       const icon = document.getElementById("refresh-icon");
       icon.classList.add("animate-spin");
 
-      // Randomize small latency and refresh timestamp
       setTimeout(() => {
         icon.classList.remove("animate-spin");
         APPS_DATA.forEach(app => {
@@ -1084,7 +1352,7 @@
         });
         document.getElementById("last-poll-time").textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         renderAppCards();
-        showToast("Refreshed all 12 edtech vendor status endpoints");
+        showToast(`Refreshed all ${APPS_DATA.length} edtech vendor status endpoints`);
       }, 750);
     }
 
@@ -1105,7 +1373,6 @@
     }
 
     window.addEventListener("DOMContentLoaded", () => {
-      // Initialize view
       renderAppCards();
       updateBroadcastBanner();
       document.getElementById("last-poll-time").textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -1137,12 +1404,23 @@
         });
       });
 
-      // Modal close handlers
+      // App Modal close handlers
       document.getElementById("modal-close-btn").addEventListener("click", closeAppModal);
       document.getElementById("modal-done-btn").addEventListener("click", closeAppModal);
+
+      // Admin PIN & Tools Security Gate
+      document.getElementById("btn-open-admin").addEventListener("click", handleOpenAdminClick);
+      document.getElementById("btn-submit-pin").addEventListener("click", verifyPin);
+      document.getElementById("btn-cancel-pin").addEventListener("click", closePinPrompt);
+      document.getElementById("admin-pin-input").addEventListener("keyup", (e) => {
+        if (e.key === "Enter") verifyPin();
+      });
+
+      // Admin Tools Modal
       document.getElementById("admin-close-btn").addEventListener("click", closeAdminModal);
       document.getElementById("admin-done-btn").addEventListener("click", closeAdminModal);
-      document.getElementById("btn-open-admin").addEventListener("click", openAdminModal);
+      document.getElementById("btn-lock-admin").addEventListener("click", lockAdminSession);
+      document.getElementById("btn-change-pin").addEventListener("click", changeAdminPin);
 
       // Admin tool actions
       document.getElementById("btn-apply-override").addEventListener("click", applyAdminOverride);
@@ -1178,7 +1456,7 @@
         box.classList.toggle("hidden");
       });
 
-      // Periodic simulated background poll every 60 seconds
+      // Simulated background polling heartbeat every 60 seconds
       setInterval(() => {
         APPS_DATA.forEach(app => {
           app.latency = `${Math.floor(35 + Math.random() * 80)}ms`;
